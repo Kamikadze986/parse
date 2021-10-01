@@ -1,5 +1,7 @@
 package com.example.parse;
 
+import android.widget.ImageView;
+
 public class Channels {
     String name_ru;
     String urlImg;

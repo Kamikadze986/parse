@@ -9,6 +9,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+
+import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -54,7 +57,7 @@ public class MainFragment extends Fragment {
                         }catch (JSONException ignored){ }
                         Channels channel =new Channels(
                                 channelData.get("name_ru").toString(),
-                                channelData.get("image").toString(),
+                                 channelData.get("image").toString(),
                                 title);
                         channels.add(channel);
                     }
@@ -70,7 +73,7 @@ public class MainFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-            View view = inflater.inflate(R.layout.fragment_main, container, false);
+        View view = inflater.inflate(R.layout.fragment_main, container, false);
         channelsList = view.findViewById(R.id.recyclerView);
         channelsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
         channelsList.setAdapter(new ChannelsAdapter(channels));

@@ -8,12 +8,14 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.squareup.picasso.Picasso;
+
 import java.util.ArrayList;
 
 public class ChannelsAdapter extends RecyclerView.Adapter<ViewHolder> {
     ArrayList<Channels>channels;
-    ChannelsAdapter(ArrayList<Channels> channels){
-        this.channels=channels;
+    ChannelsAdapter(ArrayList<Channels> channel){
+        channels=channel;
     }
     @NonNull
     @Override
@@ -26,7 +28,7 @@ public class ChannelsAdapter extends RecyclerView.Adapter<ViewHolder> {
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         holder.name.setText(channels.get(position).name_ru);
         holder.title.setText(channels.get(position).title);
-        holder.img.setImageURI(Uri.parse(channels.get(position).urlImg));
+        holder.downloadImg(channels.get(position).urlImg);
     }
 
     @Override
