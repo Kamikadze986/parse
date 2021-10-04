@@ -3,15 +3,14 @@ package com.example.parse;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.lifecycle.LiveData;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ImageView;
-
-import com.squareup.picasso.Picasso;
 
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONArray;
@@ -27,11 +26,16 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 
-public class MainFragment extends Fragment {
-    ArrayList<Channels> channels=new ArrayList<>();
+public class MainFragment extends Fragment implements View.OnClickListener {
+    Channels channels=new Channels();
+    ArrayList<Channel> channelsD =new ArrayList<>();
     private RecyclerView channelsList;
+    private ChannelsAdapter adapter;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     public void onCreate(Bundle savedInstanceState) {
+
+
         Request request = new Request.Builder()
                 .url("https://limehdads.online/playlist.json")
                 .build();
@@ -41,9 +45,9 @@ public class MainFragment extends Fragment {
             public void onFailure(@NotNull Call call, @NotNull IOException e) {
                 e.printStackTrace();
             }
-
             @Override
             public void onResponse(@NotNull Call call,@NotNull Response response) throws IOException {
+
                 JSONObject main = null;
                 try {
                     main = new JSONObject(response.body().string());
@@ -55,28 +59,54 @@ public class MainFragment extends Fragment {
                             JSONObject current=channelData.getJSONObject("current");
                             title=current.get("title").toString();
                         }catch (JSONException ignored){ }
-                        Channels channel =new Channels(
+                        Channel channel =new Channel(
                                 channelData.get("name_ru").toString(),
-                                 channelData.get("image").toString(),
+                                channelData.get("image").toString(),
                                 title);
-                        channels.add(channel);
+                        channelsD.add(channel);
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
             }
         });
+        channels.setChannels(channelsD);
         super.onCreate(savedInstanceState);
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+
         View view = inflater.inflate(R.layout.fragment_main, container, false);
         channelsList = view.findViewById(R.id.recyclerView);
+        channelsList.setOnClickListener(this);
         channelsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
-        channelsList.setAdapter(new ChannelsAdapter(channels));
+        adapter=new ChannelsAdapter(channels.getChannels());
+        channels.addAdapter(adapter);
+        channelsList.setAdapter(adapter);
+        swipeRefreshLayout=view.findViewById(R.id.refreshView);
+        swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                adapter.notifyDataSetChanged();
+                swipeRefreshLayout.setRefreshing(false);
+            }
+        });
         return view;
     }
+
+    @Override
+    public void onStart() {
+        super.onStart();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
+
+    @Override
+    public void onClick(View view) {}
+
 }
