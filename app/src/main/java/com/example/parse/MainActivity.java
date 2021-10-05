@@ -38,9 +38,7 @@ public class MainActivity extends AppCompatActivity {
 
         setContentView(R.layout.activity_main);
         FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-        //getSupportActionBar().setBackgroundDrawable(new ColorDrawable(Color.WHITE));
-        //getSupportActionBar().setTitle("Каналы");
-        String title ="Каналы";
+        String title ="Телеканалы";
         SpannableString s = new SpannableString(title);
         s.setSpan(new ForegroundColorSpan(Color.BLACK), 0, title.length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
         getSupportActionBar().setTitle(s);

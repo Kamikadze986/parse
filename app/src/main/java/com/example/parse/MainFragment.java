@@ -83,7 +83,6 @@ public class MainFragment extends Fragment implements View.OnClickListener {
         channelsList.setOnClickListener(this);
         channelsList.setLayoutManager(new LinearLayoutManager(view.getContext()));
         adapter=new ChannelsAdapter(channels.getChannels());
-        channels.addAdapter(adapter);
         channelsList.setAdapter(adapter);
         swipeRefreshLayout=view.findViewById(R.id.refreshView);
         swipeRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
