@@ -1,13 +1,18 @@
 package com.example.parse;
 
+import androidx.lifecycle.MutableLiveData;
+
 import java.util.ArrayList;
 
 public class Channels {
-    ArrayList<Channel> channels;
-    ChannelsAdapter adapter;
+    public ArrayList<Channel> channels;
+    public MutableLiveData<ArrayList<Channel>> channelsLive= new MutableLiveData<>();
 
     public Channels() {
+
         channels = new ArrayList<>();
+        initializeChannels();
+        channelsLive.setValue(channels);
     }
 
     public ArrayList<Channel> getChannels() {
@@ -15,7 +20,7 @@ public class Channels {
     }
 
 
-    public void setChannels(ArrayList<Channel> channels){
-        this.channels=channels;
+    public void initializeChannels(){
+        this.channels=Inic.initializecomponent();
     }
 }
